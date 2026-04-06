@@ -1,0 +1,86 @@
+syntax = "proto3";
+
+option go_package = "/go";
+
+service DeckService {
+    rpc CreateDeck (Request) returns (Response);
+    rpc GetDeck (GetDeckResquest) returns (Response);
+}
+
+message GetDeckResquest {
+    int32 ID = 1;
+}
+
+message Request {
+    int32 quantidade = 1;
+    string tipo = 2;
+    repeated Card card = 3;
+    Estatistica estatistica = 4;
+}
+
+message Response {
+    int32 ID = 1;
+    int32 quantidade = 2;
+    string tipo = 3;
+    repeated Card card = 4;
+    Estatistica estatistica = 5;
+}
+
+message Card {
+    int32 ID = 1;
+    onef card_type {
+        Pokemon pokemon = 2;
+        Item item = 3;
+        Apoiador apoiador = 4;
+    }
+}
+
+message Pokemon {
+    int32 ID = 1;
+    string nome = 2;
+    string card_type = 3;
+    string tipo = 4;
+    int32 estagio = 5;
+    int32 geracao = 6;
+    int32 ps = 7;
+    string tipo = 8;
+
+    repeated Ataque ataque = 9;
+    repeated Habilidade habilidade = 10;
+}
+
+message Ataque {
+    string nome = 1;
+    int32 dano = 2;
+    string custo = 3;
+    string efeito = 4;
+}
+
+message Habilidade {
+    string nome = 1;
+    string efeito = 2;
+}
+
+message Apoiador {
+    int32 ID = 1;
+    string nome = 2;
+    string card_type = 3;
+    string efeito = 4;
+}
+
+message Item {
+    int32 ID = 1;
+    string nome = 2;
+    string card_type = 3;
+    string efeito = 4;
+}
+
+message Estatistica {
+    int32 id_estatisca = 1;
+    int32 vitoria = 2;
+    int32 derrota = 3;
+    int32 total = 4
+    int32 ponto_ganho = 5;
+    int32 ponto_perdido = 6;
+    int32 media_pontos = 7;
+}
