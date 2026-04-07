@@ -15,7 +15,7 @@ message Request {
     int32 quantidade = 1;
     string tipo = 2;
     repeated Card card = 3;
-    Estatistica estatistica = 4;
+    Estatistica estatistica = 4 ;
 }
 
 message Response {
@@ -28,7 +28,8 @@ message Response {
 
 message Card {
     int32 ID = 1;
-    onef card_type {
+
+    oneof card_type {
         Pokemon pokemon = 2;
         Item item = 3;
         Apoiador apoiador = 4;
@@ -43,8 +44,7 @@ message Pokemon {
     int32 estagio = 5;
     int32 geracao = 6;
     int32 ps = 7;
-    string tipo = 8;
-
+    string fraqueza = 8;
     repeated Ataque ataque = 9;
     repeated Habilidade habilidade = 10;
 }
@@ -79,7 +79,7 @@ message Estatistica {
     int32 id_estatisca = 1;
     int32 vitoria = 2;
     int32 derrota = 3;
-    int32 total = 4
+    int32 total = 4;
     int32 ponto_ganho = 5;
     int32 ponto_perdido = 6;
     int32 media_pontos = 7;
