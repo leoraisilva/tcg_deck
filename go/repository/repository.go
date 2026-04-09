@@ -47,10 +47,58 @@ func (r *Repository) GetDeck(id int) (model.Response, error) {
 		listCard = append(listCard, cardUnit)
 	}
 
-	for _, crd = range listCard {
+	for _, crd := range listCard {
+		var valueInt int
+		var cardUnit model.Card
+		query = `SELECT id, type_card FROM cards`
+		err := r.db.QueryRow(query, crd).Scan(&cardUnit.Id, &cardUnit.CardType)
+		if err != nil {
+			fmt.Printf("Erro ao Buscar card do Deck : %v\n", err)
+			return model.Response{}, err
+		}
 
+		if cardUnit.CardType == "Pokemon" {
+			query = `SELECT card_pokemon FROM pokemon_card WHERE id_card=$1`
+			err := r.db.QueryRow(query, cardUnit.Id).Scan(&valueInt)
+			if err != nil {
+				fmt.Printf("Erro ao Buscar card do Deck : %v\n", err)
+				return model.Response{}, err
+			}
+			cardUnit.Pokemon, err = r.GetCardPokemon(valueInt)
+			if err != nil {
+				fmt.Printf("Erro ao Buscar card do Deck : %v\n", err)
+				return model.Response{}, err
+			}
+			response.Card = append(response.Card, cardUnit)
+		} else if cardUnit.CardType == "Apoiador" {
+			query = `SELECT card_apoiador FROM apoiador_card WHERE id_card=$1`
+			err := r.db.QueryRow(query, cardUnit.Id).Scan(&valueInt)
+			if err != nil {
+				fmt.Printf("Erro ao Buscar card do Deck : %v\n", err)
+				return model.Response{}, err
+			}
+			cardUnit.Apoiador, err = r.GetCardApoiador(valueInt)
+			if err != nil {
+				fmt.Printf("Erro ao Buscar card do Deck : %v\n", err)
+				return model.Response{}, err
+			}
+			response.Card = append(response.Card, cardUnit)
+		} else if cardUnit.CardType == "Item" {
+			query = `SELECT card_item FROM item_card WHERE id_card=$1`
+			err := r.db.QueryRow(query, cardUnit.Id).Scan(&valueInt)
+			if err != nil {
+				fmt.Printf("Erro ao Buscar card do Deck : %v\n", err)
+				return model.Response{}, err
+			}
+			cardUnit.Item, err = r.GetCardItem(valueInt)
+			if err != nil {
+				fmt.Printf("Erro ao Buscar card do Deck : %v\n", err)
+				return model.Response{}, err
+			}
+			response.Card = append(response.Card, cardUnit)
+		}
 	}
-
+	return response, err
 }
 
 func (r *Repository) GetCardPokemon(id int) (model.Pokemon, error) {
@@ -138,4 +186,52 @@ func (r *Repository) GetCardItem(id int) (model.Item, error) {
 		return model.Item{}, err
 	}
 	return item, err
+}
+
+func (r *Repository) CreateDeck(response model.Response) (int, error) {
+	var id int
+	query := `INSERT INTO estatistica (vitoria, derrota, pontos_ganho, pontos_perdido) VALUES ($1, $2, $3, $4)`
+	_, err := r.db.Exec(query, response.Estatistica.Vitoria, response.Estatistica.Derrota, response.Estatistica.Ponto_ganho, response.Estatistica.Ponto_perdido)
+	if err != nil {
+		fmt.Printf("Erro ao criar a estatistica do Deck: %v\n", err)
+		return 0, err
+	}
+	for _, card := range response.Card {
+		var idCard int
+		query = `INSERT INTO cards (type_card) VALUES ($1) RETURNING id`
+		err := r.db.QueryRow(query, card.CardType).Scan(&idCard)
+		if err != nil {
+			fmt.Printf("Erro ao criar um card do Deck: %v\n", err)
+			return 0, err
+		}
+		if card.CardType == "Pokemon" {
+			query = `INSERT INTO cards_pokemon (id_card, card_pokemon) VALUES ($1, $2)`
+			_, err = r.db.Exec(query, idCard, card.Pokemon.Id)
+			if err != nil {
+				fmt.Printf("Erro ao criar um card Pokemon no Deck: %v\n", err)
+				return 0, err
+			}
+		} else if card.CardType == "Apoiador" {
+			query = `INSERT INTO cards_apoiador (id_card, card_apoiador) VALUES ($1, $2)`
+			_, err = r.db.Exec(query, idCard, card.Apoiador.Id)
+			if err != nil {
+				fmt.Printf("Erro ao criar um card Apoiador no Deck: %v\n", err)
+				return 0, err
+			}
+		} else if card.CardType == "Item" {
+			query = `INSERT INTO cards_item (id_card, card_item) VALUES ($1, $2)`
+			_, err = r.db.Exec(query, idCard, card.Item.Id)
+			if err != nil {
+				fmt.Printf("Erro ao criar um card Pokemon no Deck: %v\n", err)
+				return 0, err
+			}
+		}
+	}
+	query = `INSERT INTO deck (quantidade, tipo) VALUES ($1, $2) RETURING id`
+	err = r.db.QueryRow(query, response.Quantidade, response.Tipo).Scan(&id)
+	if err != nil {
+		fmt.Printf("Erro ao criar um Deck: %v\n", err)
+		return 0, err
+	}
+	return id, err
 }
