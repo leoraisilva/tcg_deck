@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.6.1
 // - protoc             v5.29.0
-// source: deck_pocket.proto
+// source: proto/deck_pocket.proto
 
-package _go
+package pb
 
 import (
 	context "context"
@@ -155,5 +155,5 @@ var DeckService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "deck_pocket.proto",
+	Metadata: "proto/deck_pocket.proto",
 }

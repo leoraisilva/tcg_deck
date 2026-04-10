@@ -13,10 +13,10 @@ func NewUsecase(r repository.Repository) Usecase {
 	return Usecase{r: r}
 }
 
-func (u *Usecase) CreateDeck(response model.Response) (int, error) {
+func (u *Usecase) CreateDeck(response model.Response) (int32, error) {
 	return u.r.CreateDeck(response)
 }
 
-func (u *Usecase) GetDeck(id int) (model.Response, error) {
+func (u *Usecase) GetDeck(id int32) (model.Response, error) {
 	return u.r.GetDeck(id)
 }

@@ -18,7 +18,7 @@ func NewController(u usecase.Usecase) Controller {
 
 func (c *Controller) GetDeck(g gin.Context) {
 	idParams := g.Param("id")
-	var id int
+	var id int32
 	_, err := fmt.Sscanf(idParams, "id", &id)
 	if err != nil {
 		g.JSON(400, gin.H{"error": err.Error()})

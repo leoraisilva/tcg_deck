@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "/go";
+option go_package = "go/pb";
 
 service DeckService {
     rpc CreateDeck (Request) returns (Response);
@@ -44,9 +44,10 @@ message Pokemon {
     int32 estagio = 5;
     int32 geracao = 6;
     int32 ps = 7;
-    string fraqueza = 8;
-    repeated Ataque ataque = 9;
-    repeated Habilidade habilidade = 10;
+    int32 recuo = 8;
+    string fraqueza = 9;
+    repeated Ataque ataque = 10;
+    repeated Habilidade habilidade = 11;
 }
 
 message Ataque {

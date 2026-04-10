@@ -10,19 +10,19 @@ CREATE TABLE IF NOT EXISTS deck_card (
     card_deck INT NOT NULL,
     PRIMARY KEY (id_deck, card_deck),
     FOREIGN KEY (id_deck) REFERENCES deck(id),
-    FOREIGN KEY (card_deck) REFERENCES cards (card_deck)
+    FOREIGN KEY (card_deck) REFERENCES cards (id)
 );
 
 CREATE TABLE IF NOT EXISTS cards (
     id SERIAL PRIMARY KEY,
-    type_card VARCHAR(50) NOT NULL,
+    type_card VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS cards_pokemon (
     id_card INT NOT NULL,
     card_pokemon INT NOT NULL,
     PRIMARY KEY (id_card, card_pokemon),
-    FOREIGN KEY (id_card) REFERENCES cards(id_card),
+    FOREIGN KEY (id_card) REFERENCES cards(id),
     FOREIGN KEY (card_pokemon) REFERENCES pokemon (id)
 );
 
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS cards_apoiador (
     id_card INT NOT NULL,
     card_apoiador INT NOT NULL,
     PRIMARY KEY (id_card, card_apoiador),
-    FOREIGN KEY (id_card) REFERENCES cards(id_card),
+    FOREIGN KEY (id_card) REFERENCES cards(id),
     FOREIGN KEY (card_apoiador) REFERENCES apoiador (id)
 );
 
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS cards_item (
     id_card INT NOT NULL,
     card_item INT NOT NULL,
     PRIMARY KEY (id_card, card_item),
-    FOREIGN KEY (id_card) REFERENCES cards(id_card),
+    FOREIGN KEY (id_card) REFERENCES cards(id),
     FOREIGN KEY (card_item) REFERENCES item (id)
 );
 
@@ -49,5 +49,5 @@ CREATE TABLE IF NOT EXISTS estatistica (
     total INT NOT NULL,
     pontos_ganho INT NOT NULL,
     pontos_perdido INT NOT NULL,
-    media_pontos DECIMAL(10,2) NOT NULL,
+    media_pontos DECIMAL(10,2) NOT NULL
 );

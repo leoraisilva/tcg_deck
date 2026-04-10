@@ -14,9 +14,9 @@ func NewRepository(db *sql.DB) Repository {
 	return Repository{db: db}
 }
 
-func (r *Repository) GetDeck(id int) (model.Response, error) {
+func (r *Repository) GetDeck(id int32) (model.Response, error) {
 	var response model.Response
-	var estatistica int
+	var estatistica int32
 	query := `SELECT id, quantidade, tipo, estatistica FROM deck_tb WHERE id=$1`
 	err := r.db.QueryRow(query, id).Scan(&response.Id, &response.Quantidade, &response.Tipo, &estatistica)
 	if err != nil {
@@ -48,7 +48,7 @@ func (r *Repository) GetDeck(id int) (model.Response, error) {
 	}
 
 	for _, crd := range listCard {
-		var valueInt int
+		var valueInt int32
 		var cardUnit model.Card
 		query = `SELECT id, type_card FROM cards`
 		err := r.db.QueryRow(query, crd).Scan(&cardUnit.Id, &cardUnit.CardType)
@@ -101,7 +101,7 @@ func (r *Repository) GetDeck(id int) (model.Response, error) {
 	return response, err
 }
 
-func (r *Repository) GetCardPokemon(id int) (model.Pokemon, error) {
+func (r *Repository) GetCardPokemon(id int32) (model.Pokemon, error) {
 	var pokemon model.Pokemon
 	query := `SELECT id, nome, card_type, tipo, estagio, geracao, ps, recuo, fraqueza FROM pokemon WHERE id=$1`
 	err := r.db.QueryRow(query, id).Scan(&pokemon.Id, &pokemon.Nome, &pokemon.TipoCarta, &pokemon.Tipo, &pokemon.Estagio, &pokemon.Geracao, &pokemon.PS, &pokemon.Recuo, &pokemon.Fraqueza)
@@ -166,7 +166,7 @@ func (r *Repository) GetCardPokemon(id int) (model.Pokemon, error) {
 	return pokemon, err
 }
 
-func (r *Repository) GetCardApoiador(id int) (model.Apoiador, error) {
+func (r *Repository) GetCardApoiador(id int32) (model.Apoiador, error) {
 	var apoiador model.Apoiador
 	query := `SELECT id, nome, card_type, efeito FROM apoiador WHERE id=$1`
 	err := r.db.QueryRow(query, id).Scan(&apoiador.Id, &apoiador.Nome, &apoiador.CardType, &apoiador.Efeito)
@@ -177,7 +177,7 @@ func (r *Repository) GetCardApoiador(id int) (model.Apoiador, error) {
 	return apoiador, err
 }
 
-func (r *Repository) GetCardItem(id int) (model.Item, error) {
+func (r *Repository) GetCardItem(id int32) (model.Item, error) {
 	var item model.Item
 	query := `SELECT id, nome, card_type, efeito FROM apoiador WHERE id=$1`
 	err := r.db.QueryRow(query, id).Scan(&item.Id, &item.Nome, &item.CardType, &item.Efeito)
@@ -188,8 +188,8 @@ func (r *Repository) GetCardItem(id int) (model.Item, error) {
 	return item, err
 }
 
-func (r *Repository) CreateDeck(response model.Response) (int, error) {
-	var id int
+func (r *Repository) CreateDeck(response model.Response) (int32, error) {
+	var id int32
 	query := `INSERT INTO estatistica (vitoria, derrota, pontos_ganho, pontos_perdido) VALUES ($1, $2, $3, $4)`
 	_, err := r.db.Exec(query, response.Estatistica.Vitoria, response.Estatistica.Derrota, response.Estatistica.Ponto_ganho, response.Estatistica.Ponto_perdido)
 	if err != nil {
@@ -197,7 +197,7 @@ func (r *Repository) CreateDeck(response model.Response) (int, error) {
 		return 0, err
 	}
 	for _, card := range response.Card {
-		var idCard int
+		var idCard int32
 		query = `INSERT INTO cards (type_card) VALUES ($1) RETURNING id`
 		err := r.db.QueryRow(query, card.CardType).Scan(&idCard)
 		if err != nil {
