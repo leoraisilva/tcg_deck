@@ -11,6 +11,8 @@ import (
 	"tcg_deck/go/usecase"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type Server struct {
@@ -38,6 +40,20 @@ func (s *Server) GetDeck(cont context.Context, request *pb.GetDeckResquest) (*pb
 
 	result := s.mapper.ToPBResponse(response)
 	return result, nil
+}
+
+func (s *Server) AddCard(cont context.Context, request *pb.AddCardRequest) (*pb.Response, error) {
+	response, err := s.usecase.AddCard(request)
+	if err != nil {
+		panic(err)
+	}
+	return response, nil
+}
+func (s *Server) EditDeck(context.Context, *pb.EditCardRequest) (*pb.Response, error) {
+	return nil, status.Error(codes.Unimplemented, "method EditDeck not implemented")
+}
+func (s *Server) RemoveDeck(context.Context, *pb.GetDeckResquest) (*pb.ResponseMessage, error) {
+	return nil, status.Error(codes.Unimplemented, "method RemoveDeck not implemented")
 }
 
 func main() {

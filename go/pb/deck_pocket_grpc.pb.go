@@ -21,6 +21,9 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	DeckService_CreateDeck_FullMethodName = "/DeckService/CreateDeck"
 	DeckService_GetDeck_FullMethodName    = "/DeckService/GetDeck"
+	DeckService_AddCard_FullMethodName    = "/DeckService/AddCard"
+	DeckService_EditDeck_FullMethodName   = "/DeckService/EditDeck"
+	DeckService_RemoveDeck_FullMethodName = "/DeckService/RemoveDeck"
 )
 
 // DeckServiceClient is the client API for DeckService service.
@@ -29,6 +32,9 @@ const (
 type DeckServiceClient interface {
 	CreateDeck(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
 	GetDeck(ctx context.Context, in *GetDeckResquest, opts ...grpc.CallOption) (*Response, error)
+	AddCard(ctx context.Context, in *AddCardRequest, opts ...grpc.CallOption) (*Response, error)
+	EditDeck(ctx context.Context, in *EditCardRequest, opts ...grpc.CallOption) (*Response, error)
+	RemoveDeck(ctx context.Context, in *GetDeckResquest, opts ...grpc.CallOption) (*ResponseMessage, error)
 }
 
 type deckServiceClient struct {
@@ -59,12 +65,45 @@ func (c *deckServiceClient) GetDeck(ctx context.Context, in *GetDeckResquest, op
 	return out, nil
 }
 
+func (c *deckServiceClient) AddCard(ctx context.Context, in *AddCardRequest, opts ...grpc.CallOption) (*Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Response)
+	err := c.cc.Invoke(ctx, DeckService_AddCard_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *deckServiceClient) EditDeck(ctx context.Context, in *EditCardRequest, opts ...grpc.CallOption) (*Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Response)
+	err := c.cc.Invoke(ctx, DeckService_EditDeck_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *deckServiceClient) RemoveDeck(ctx context.Context, in *GetDeckResquest, opts ...grpc.CallOption) (*ResponseMessage, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ResponseMessage)
+	err := c.cc.Invoke(ctx, DeckService_RemoveDeck_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DeckServiceServer is the server API for DeckService service.
 // All implementations must embed UnimplementedDeckServiceServer
 // for forward compatibility.
 type DeckServiceServer interface {
 	CreateDeck(context.Context, *Request) (*Response, error)
 	GetDeck(context.Context, *GetDeckResquest) (*Response, error)
+	AddCard(context.Context, *AddCardRequest) (*Response, error)
+	EditDeck(context.Context, *EditCardRequest) (*Response, error)
+	RemoveDeck(context.Context, *GetDeckResquest) (*ResponseMessage, error)
 	mustEmbedUnimplementedDeckServiceServer()
 }
 
@@ -80,6 +119,15 @@ func (UnimplementedDeckServiceServer) CreateDeck(context.Context, *Request) (*Re
 }
 func (UnimplementedDeckServiceServer) GetDeck(context.Context, *GetDeckResquest) (*Response, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetDeck not implemented")
+}
+func (UnimplementedDeckServiceServer) AddCard(context.Context, *AddCardRequest) (*Response, error) {
+	return nil, status.Error(codes.Unimplemented, "method AddCard not implemented")
+}
+func (UnimplementedDeckServiceServer) EditDeck(context.Context, *EditCardRequest) (*Response, error) {
+	return nil, status.Error(codes.Unimplemented, "method EditDeck not implemented")
+}
+func (UnimplementedDeckServiceServer) RemoveDeck(context.Context, *GetDeckResquest) (*ResponseMessage, error) {
+	return nil, status.Error(codes.Unimplemented, "method RemoveDeck not implemented")
 }
 func (UnimplementedDeckServiceServer) mustEmbedUnimplementedDeckServiceServer() {}
 func (UnimplementedDeckServiceServer) testEmbeddedByValue()                     {}
@@ -138,6 +186,60 @@ func _DeckService_GetDeck_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DeckService_AddCard_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddCardRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DeckServiceServer).AddCard(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DeckService_AddCard_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DeckServiceServer).AddCard(ctx, req.(*AddCardRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DeckService_EditDeck_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EditCardRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DeckServiceServer).EditDeck(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DeckService_EditDeck_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DeckServiceServer).EditDeck(ctx, req.(*EditCardRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DeckService_RemoveDeck_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetDeckResquest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DeckServiceServer).RemoveDeck(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DeckService_RemoveDeck_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DeckServiceServer).RemoveDeck(ctx, req.(*GetDeckResquest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // DeckService_ServiceDesc is the grpc.ServiceDesc for DeckService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -152,6 +254,18 @@ var DeckService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetDeck",
 			Handler:    _DeckService_GetDeck_Handler,
+		},
+		{
+			MethodName: "AddCard",
+			Handler:    _DeckService_AddCard_Handler,
+		},
+		{
+			MethodName: "EditDeck",
+			Handler:    _DeckService_EditDeck_Handler,
+		},
+		{
+			MethodName: "RemoveDeck",
+			Handler:    _DeckService_RemoveDeck_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -69,8 +69,7 @@ type Request struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Quantidade    int32                  `protobuf:"varint,1,opt,name=quantidade,proto3" json:"quantidade,omitempty"`
 	Tipo          string                 `protobuf:"bytes,2,opt,name=tipo,proto3" json:"tipo,omitempty"`
-	Card          []*Card                `protobuf:"bytes,3,rep,name=card,proto3" json:"card,omitempty"`
-	Estatistica   *Estatistica           `protobuf:"bytes,4,opt,name=estatistica,proto3" json:"estatistica,omitempty"`
+	Estatistica   *Estatistica           `protobuf:"bytes,3,opt,name=estatistica,proto3" json:"estatistica,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -117,13 +116,6 @@ func (x *Request) GetTipo() string {
 		return x.Tipo
 	}
 	return ""
-}
-
-func (x *Request) GetCard() []*Card {
-	if x != nil {
-		return x.Card
-	}
-	return nil
 }
 
 func (x *Request) GetEstatistica() *Estatistica {
@@ -209,22 +201,168 @@ func (x *Response) GetEstatistica() *Estatistica {
 	return nil
 }
 
+type AddCardRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	IdDeck        int32                  `protobuf:"varint,1,opt,name=id_deck,json=idDeck,proto3" json:"id_deck,omitempty"`
+	Card          []*Card                `protobuf:"bytes,2,rep,name=card,proto3" json:"card,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AddCardRequest) Reset() {
+	*x = AddCardRequest{}
+	mi := &file_proto_deck_pocket_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AddCardRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AddCardRequest) ProtoMessage() {}
+
+func (x *AddCardRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_deck_pocket_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AddCardRequest.ProtoReflect.Descriptor instead.
+func (*AddCardRequest) Descriptor() ([]byte, []int) {
+	return file_proto_deck_pocket_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *AddCardRequest) GetIdDeck() int32 {
+	if x != nil {
+		return x.IdDeck
+	}
+	return 0
+}
+
+func (x *AddCardRequest) GetCard() []*Card {
+	if x != nil {
+		return x.Card
+	}
+	return nil
+}
+
+type EditCardRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	IdDeck        int32                  `protobuf:"varint,1,opt,name=id_deck,json=idDeck,proto3" json:"id_deck,omitempty"`
+	Card          []*Card                `protobuf:"bytes,2,rep,name=card,proto3" json:"card,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EditCardRequest) Reset() {
+	*x = EditCardRequest{}
+	mi := &file_proto_deck_pocket_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EditCardRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EditCardRequest) ProtoMessage() {}
+
+func (x *EditCardRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_deck_pocket_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EditCardRequest.ProtoReflect.Descriptor instead.
+func (*EditCardRequest) Descriptor() ([]byte, []int) {
+	return file_proto_deck_pocket_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *EditCardRequest) GetIdDeck() int32 {
+	if x != nil {
+		return x.IdDeck
+	}
+	return 0
+}
+
+func (x *EditCardRequest) GetCard() []*Card {
+	if x != nil {
+		return x.Card
+	}
+	return nil
+}
+
+type ResponseMessage struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Response      string                 `protobuf:"bytes,1,opt,name=response,proto3" json:"response,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ResponseMessage) Reset() {
+	*x = ResponseMessage{}
+	mi := &file_proto_deck_pocket_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ResponseMessage) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ResponseMessage) ProtoMessage() {}
+
+func (x *ResponseMessage) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_deck_pocket_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ResponseMessage.ProtoReflect.Descriptor instead.
+func (*ResponseMessage) Descriptor() ([]byte, []int) {
+	return file_proto_deck_pocket_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *ResponseMessage) GetResponse() string {
+	if x != nil {
+		return x.Response
+	}
+	return ""
+}
+
 type Card struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	ID    int32                  `protobuf:"varint,1,opt,name=ID,proto3" json:"ID,omitempty"`
-	// Types that are valid to be assigned to CardType:
-	//
-	//	*Card_Pokemon
-	//	*Card_Item
-	//	*Card_Apoiador
-	CardType      isCard_CardType `protobuf_oneof:"card_type"`
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ID            int32                  `protobuf:"varint,1,opt,name=ID,proto3" json:"ID,omitempty"`
+	CardType      string                 `protobuf:"bytes,2,opt,name=card_type,json=cardType,proto3" json:"card_type,omitempty"`
+	IdPokemon     int32                  `protobuf:"varint,3,opt,name=id_pokemon,json=idPokemon,proto3" json:"id_pokemon,omitempty"`
+	IdItem        int32                  `protobuf:"varint,4,opt,name=id_item,json=idItem,proto3" json:"id_item,omitempty"`
+	IdApoiador    int32                  `protobuf:"varint,5,opt,name=id_apoiador,json=idApoiador,proto3" json:"id_apoiador,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Card) Reset() {
 	*x = Card{}
-	mi := &file_proto_deck_pocket_proto_msgTypes[3]
+	mi := &file_proto_deck_pocket_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -236,7 +374,7 @@ func (x *Card) String() string {
 func (*Card) ProtoMessage() {}
 
 func (x *Card) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_deck_pocket_proto_msgTypes[3]
+	mi := &file_proto_deck_pocket_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -249,7 +387,7 @@ func (x *Card) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Card.ProtoReflect.Descriptor instead.
 func (*Card) Descriptor() ([]byte, []int) {
-	return file_proto_deck_pocket_proto_rawDescGZIP(), []int{3}
+	return file_proto_deck_pocket_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *Card) GetID() int32 {
@@ -259,61 +397,33 @@ func (x *Card) GetID() int32 {
 	return 0
 }
 
-func (x *Card) GetCardType() isCard_CardType {
+func (x *Card) GetCardType() string {
 	if x != nil {
 		return x.CardType
 	}
-	return nil
+	return ""
 }
 
-func (x *Card) GetPokemon() *Pokemon {
+func (x *Card) GetIdPokemon() int32 {
 	if x != nil {
-		if x, ok := x.CardType.(*Card_Pokemon); ok {
-			return x.Pokemon
-		}
+		return x.IdPokemon
 	}
-	return nil
+	return 0
 }
 
-func (x *Card) GetItem() *Item {
+func (x *Card) GetIdItem() int32 {
 	if x != nil {
-		if x, ok := x.CardType.(*Card_Item); ok {
-			return x.Item
-		}
+		return x.IdItem
 	}
-	return nil
+	return 0
 }
 
-func (x *Card) GetApoiador() *Apoiador {
+func (x *Card) GetIdApoiador() int32 {
 	if x != nil {
-		if x, ok := x.CardType.(*Card_Apoiador); ok {
-			return x.Apoiador
-		}
+		return x.IdApoiador
 	}
-	return nil
+	return 0
 }
-
-type isCard_CardType interface {
-	isCard_CardType()
-}
-
-type Card_Pokemon struct {
-	Pokemon *Pokemon `protobuf:"bytes,2,opt,name=pokemon,proto3,oneof"`
-}
-
-type Card_Item struct {
-	Item *Item `protobuf:"bytes,3,opt,name=item,proto3,oneof"`
-}
-
-type Card_Apoiador struct {
-	Apoiador *Apoiador `protobuf:"bytes,4,opt,name=apoiador,proto3,oneof"`
-}
-
-func (*Card_Pokemon) isCard_CardType() {}
-
-func (*Card_Item) isCard_CardType() {}
-
-func (*Card_Apoiador) isCard_CardType() {}
 
 type Pokemon struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -334,7 +444,7 @@ type Pokemon struct {
 
 func (x *Pokemon) Reset() {
 	*x = Pokemon{}
-	mi := &file_proto_deck_pocket_proto_msgTypes[4]
+	mi := &file_proto_deck_pocket_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -346,7 +456,7 @@ func (x *Pokemon) String() string {
 func (*Pokemon) ProtoMessage() {}
 
 func (x *Pokemon) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_deck_pocket_proto_msgTypes[4]
+	mi := &file_proto_deck_pocket_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -359,7 +469,7 @@ func (x *Pokemon) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Pokemon.ProtoReflect.Descriptor instead.
 func (*Pokemon) Descriptor() ([]byte, []int) {
-	return file_proto_deck_pocket_proto_rawDescGZIP(), []int{4}
+	return file_proto_deck_pocket_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *Pokemon) GetID() int32 {
@@ -451,7 +561,7 @@ type Ataque struct {
 
 func (x *Ataque) Reset() {
 	*x = Ataque{}
-	mi := &file_proto_deck_pocket_proto_msgTypes[5]
+	mi := &file_proto_deck_pocket_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -463,7 +573,7 @@ func (x *Ataque) String() string {
 func (*Ataque) ProtoMessage() {}
 
 func (x *Ataque) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_deck_pocket_proto_msgTypes[5]
+	mi := &file_proto_deck_pocket_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -476,7 +586,7 @@ func (x *Ataque) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Ataque.ProtoReflect.Descriptor instead.
 func (*Ataque) Descriptor() ([]byte, []int) {
-	return file_proto_deck_pocket_proto_rawDescGZIP(), []int{5}
+	return file_proto_deck_pocket_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *Ataque) GetNome() string {
@@ -517,7 +627,7 @@ type Habilidade struct {
 
 func (x *Habilidade) Reset() {
 	*x = Habilidade{}
-	mi := &file_proto_deck_pocket_proto_msgTypes[6]
+	mi := &file_proto_deck_pocket_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -529,7 +639,7 @@ func (x *Habilidade) String() string {
 func (*Habilidade) ProtoMessage() {}
 
 func (x *Habilidade) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_deck_pocket_proto_msgTypes[6]
+	mi := &file_proto_deck_pocket_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -542,7 +652,7 @@ func (x *Habilidade) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Habilidade.ProtoReflect.Descriptor instead.
 func (*Habilidade) Descriptor() ([]byte, []int) {
-	return file_proto_deck_pocket_proto_rawDescGZIP(), []int{6}
+	return file_proto_deck_pocket_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *Habilidade) GetNome() string {
@@ -571,7 +681,7 @@ type Apoiador struct {
 
 func (x *Apoiador) Reset() {
 	*x = Apoiador{}
-	mi := &file_proto_deck_pocket_proto_msgTypes[7]
+	mi := &file_proto_deck_pocket_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -583,7 +693,7 @@ func (x *Apoiador) String() string {
 func (*Apoiador) ProtoMessage() {}
 
 func (x *Apoiador) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_deck_pocket_proto_msgTypes[7]
+	mi := &file_proto_deck_pocket_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -596,7 +706,7 @@ func (x *Apoiador) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Apoiador.ProtoReflect.Descriptor instead.
 func (*Apoiador) Descriptor() ([]byte, []int) {
-	return file_proto_deck_pocket_proto_rawDescGZIP(), []int{7}
+	return file_proto_deck_pocket_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *Apoiador) GetID() int32 {
@@ -639,7 +749,7 @@ type Item struct {
 
 func (x *Item) Reset() {
 	*x = Item{}
-	mi := &file_proto_deck_pocket_proto_msgTypes[8]
+	mi := &file_proto_deck_pocket_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -651,7 +761,7 @@ func (x *Item) String() string {
 func (*Item) ProtoMessage() {}
 
 func (x *Item) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_deck_pocket_proto_msgTypes[8]
+	mi := &file_proto_deck_pocket_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -664,7 +774,7 @@ func (x *Item) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Item.ProtoReflect.Descriptor instead.
 func (*Item) Descriptor() ([]byte, []int) {
-	return file_proto_deck_pocket_proto_rawDescGZIP(), []int{8}
+	return file_proto_deck_pocket_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *Item) GetID() int32 {
@@ -703,14 +813,14 @@ type Estatistica struct {
 	Total         int32                  `protobuf:"varint,4,opt,name=total,proto3" json:"total,omitempty"`
 	PontoGanho    int32                  `protobuf:"varint,5,opt,name=ponto_ganho,json=pontoGanho,proto3" json:"ponto_ganho,omitempty"`
 	PontoPerdido  int32                  `protobuf:"varint,6,opt,name=ponto_perdido,json=pontoPerdido,proto3" json:"ponto_perdido,omitempty"`
-	MediaPontos   int32                  `protobuf:"varint,7,opt,name=media_pontos,json=mediaPontos,proto3" json:"media_pontos,omitempty"`
+	MediaPontos   float32                `protobuf:"fixed32,7,opt,name=media_pontos,json=mediaPontos,proto3" json:"media_pontos,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Estatistica) Reset() {
 	*x = Estatistica{}
-	mi := &file_proto_deck_pocket_proto_msgTypes[9]
+	mi := &file_proto_deck_pocket_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -722,7 +832,7 @@ func (x *Estatistica) String() string {
 func (*Estatistica) ProtoMessage() {}
 
 func (x *Estatistica) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_deck_pocket_proto_msgTypes[9]
+	mi := &file_proto_deck_pocket_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -735,7 +845,7 @@ func (x *Estatistica) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Estatistica.ProtoReflect.Descriptor instead.
 func (*Estatistica) Descriptor() ([]byte, []int) {
-	return file_proto_deck_pocket_proto_rawDescGZIP(), []int{9}
+	return file_proto_deck_pocket_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *Estatistica) GetIdEstatisca() int32 {
@@ -780,7 +890,7 @@ func (x *Estatistica) GetPontoPerdido() int32 {
 	return 0
 }
 
-func (x *Estatistica) GetMediaPontos() int32 {
+func (x *Estatistica) GetMediaPontos() float32 {
 	if x != nil {
 		return x.MediaPontos
 	}
@@ -793,14 +903,13 @@ const file_proto_deck_pocket_proto_rawDesc = "" +
 	"\n" +
 	"\x17proto/deck_pocket.proto\"!\n" +
 	"\x0fGetDeckResquest\x12\x0e\n" +
-	"\x02ID\x18\x01 \x01(\x05R\x02ID\"\x88\x01\n" +
+	"\x02ID\x18\x01 \x01(\x05R\x02ID\"m\n" +
 	"\aRequest\x12\x1e\n" +
 	"\n" +
 	"quantidade\x18\x01 \x01(\x05R\n" +
 	"quantidade\x12\x12\n" +
-	"\x04tipo\x18\x02 \x01(\tR\x04tipo\x12\x19\n" +
-	"\x04card\x18\x03 \x03(\v2\x05.CardR\x04card\x12.\n" +
-	"\vestatistica\x18\x04 \x01(\v2\f.EstatisticaR\vestatistica\"\x99\x01\n" +
+	"\x04tipo\x18\x02 \x01(\tR\x04tipo\x12.\n" +
+	"\vestatistica\x18\x03 \x01(\v2\f.EstatisticaR\vestatistica\"\x99\x01\n" +
 	"\bResponse\x12\x0e\n" +
 	"\x02ID\x18\x01 \x01(\x05R\x02ID\x12\x1e\n" +
 	"\n" +
@@ -808,13 +917,23 @@ const file_proto_deck_pocket_proto_rawDesc = "" +
 	"quantidade\x12\x12\n" +
 	"\x04tipo\x18\x03 \x01(\tR\x04tipo\x12\x19\n" +
 	"\x04card\x18\x04 \x03(\v2\x05.CardR\x04card\x12.\n" +
-	"\vestatistica\x18\x05 \x01(\v2\f.EstatisticaR\vestatistica\"\x8f\x01\n" +
+	"\vestatistica\x18\x05 \x01(\v2\f.EstatisticaR\vestatistica\"D\n" +
+	"\x0eAddCardRequest\x12\x17\n" +
+	"\aid_deck\x18\x01 \x01(\x05R\x06idDeck\x12\x19\n" +
+	"\x04card\x18\x02 \x03(\v2\x05.CardR\x04card\"E\n" +
+	"\x0fEditCardRequest\x12\x17\n" +
+	"\aid_deck\x18\x01 \x01(\x05R\x06idDeck\x12\x19\n" +
+	"\x04card\x18\x02 \x03(\v2\x05.CardR\x04card\"-\n" +
+	"\x0fResponseMessage\x12\x1a\n" +
+	"\bresponse\x18\x01 \x01(\tR\bresponse\"\x8c\x01\n" +
 	"\x04Card\x12\x0e\n" +
-	"\x02ID\x18\x01 \x01(\x05R\x02ID\x12$\n" +
-	"\apokemon\x18\x02 \x01(\v2\b.PokemonH\x00R\apokemon\x12\x1b\n" +
-	"\x04item\x18\x03 \x01(\v2\x05.ItemH\x00R\x04item\x12'\n" +
-	"\bapoiador\x18\x04 \x01(\v2\t.ApoiadorH\x00R\bapoiadorB\v\n" +
-	"\tcard_type\"\xa2\x02\n" +
+	"\x02ID\x18\x01 \x01(\x05R\x02ID\x12\x1b\n" +
+	"\tcard_type\x18\x02 \x01(\tR\bcardType\x12\x1d\n" +
+	"\n" +
+	"id_pokemon\x18\x03 \x01(\x05R\tidPokemon\x12\x17\n" +
+	"\aid_item\x18\x04 \x01(\x05R\x06idItem\x12\x1f\n" +
+	"\vid_apoiador\x18\x05 \x01(\x05R\n" +
+	"idApoiador\"\xa2\x02\n" +
 	"\aPokemon\x12\x0e\n" +
 	"\x02ID\x18\x01 \x01(\x05R\x02ID\x12\x12\n" +
 	"\x04nome\x18\x02 \x01(\tR\x04nome\x12\x1b\n" +
@@ -857,11 +976,15 @@ const file_proto_deck_pocket_proto_rawDesc = "" +
 	"\vponto_ganho\x18\x05 \x01(\x05R\n" +
 	"pontoGanho\x12#\n" +
 	"\rponto_perdido\x18\x06 \x01(\x05R\fpontoPerdido\x12!\n" +
-	"\fmedia_pontos\x18\a \x01(\x05R\vmediaPontos2X\n" +
+	"\fmedia_pontos\x18\a \x01(\x02R\vmediaPontos2\xda\x01\n" +
 	"\vDeckService\x12!\n" +
 	"\n" +
 	"CreateDeck\x12\b.Request\x1a\t.Response\x12&\n" +
-	"\aGetDeck\x12\x10.GetDeckResquest\x1a\t.ResponseB\aZ\x05go/pbb\x06proto3"
+	"\aGetDeck\x12\x10.GetDeckResquest\x1a\t.Response\x12%\n" +
+	"\aAddCard\x12\x0f.AddCardRequest\x1a\t.Response\x12'\n" +
+	"\bEditDeck\x12\x10.EditCardRequest\x1a\t.Response\x120\n" +
+	"\n" +
+	"RemoveDeck\x12\x10.GetDeckResquest\x1a\x10.ResponseMessageB\aZ\x05go/pbb\x06proto3"
 
 var (
 	file_proto_deck_pocket_proto_rawDescOnce sync.Once
@@ -875,38 +998,45 @@ func file_proto_deck_pocket_proto_rawDescGZIP() []byte {
 	return file_proto_deck_pocket_proto_rawDescData
 }
 
-var file_proto_deck_pocket_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_proto_deck_pocket_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_proto_deck_pocket_proto_goTypes = []any{
 	(*GetDeckResquest)(nil), // 0: GetDeckResquest
 	(*Request)(nil),         // 1: Request
 	(*Response)(nil),        // 2: Response
-	(*Card)(nil),            // 3: Card
-	(*Pokemon)(nil),         // 4: Pokemon
-	(*Ataque)(nil),          // 5: Ataque
-	(*Habilidade)(nil),      // 6: Habilidade
-	(*Apoiador)(nil),        // 7: Apoiador
-	(*Item)(nil),            // 8: Item
-	(*Estatistica)(nil),     // 9: Estatistica
+	(*AddCardRequest)(nil),  // 3: AddCardRequest
+	(*EditCardRequest)(nil), // 4: EditCardRequest
+	(*ResponseMessage)(nil), // 5: ResponseMessage
+	(*Card)(nil),            // 6: Card
+	(*Pokemon)(nil),         // 7: Pokemon
+	(*Ataque)(nil),          // 8: Ataque
+	(*Habilidade)(nil),      // 9: Habilidade
+	(*Apoiador)(nil),        // 10: Apoiador
+	(*Item)(nil),            // 11: Item
+	(*Estatistica)(nil),     // 12: Estatistica
 }
 var file_proto_deck_pocket_proto_depIdxs = []int32{
-	3,  // 0: Request.card:type_name -> Card
-	9,  // 1: Request.estatistica:type_name -> Estatistica
-	3,  // 2: Response.card:type_name -> Card
-	9,  // 3: Response.estatistica:type_name -> Estatistica
-	4,  // 4: Card.pokemon:type_name -> Pokemon
-	8,  // 5: Card.item:type_name -> Item
-	7,  // 6: Card.apoiador:type_name -> Apoiador
-	5,  // 7: Pokemon.ataque:type_name -> Ataque
-	6,  // 8: Pokemon.habilidade:type_name -> Habilidade
-	1,  // 9: DeckService.CreateDeck:input_type -> Request
-	0,  // 10: DeckService.GetDeck:input_type -> GetDeckResquest
-	2,  // 11: DeckService.CreateDeck:output_type -> Response
-	2,  // 12: DeckService.GetDeck:output_type -> Response
-	11, // [11:13] is the sub-list for method output_type
-	9,  // [9:11] is the sub-list for method input_type
-	9,  // [9:9] is the sub-list for extension type_name
-	9,  // [9:9] is the sub-list for extension extendee
-	0,  // [0:9] is the sub-list for field type_name
+	12, // 0: Request.estatistica:type_name -> Estatistica
+	6,  // 1: Response.card:type_name -> Card
+	12, // 2: Response.estatistica:type_name -> Estatistica
+	6,  // 3: AddCardRequest.card:type_name -> Card
+	6,  // 4: EditCardRequest.card:type_name -> Card
+	8,  // 5: Pokemon.ataque:type_name -> Ataque
+	9,  // 6: Pokemon.habilidade:type_name -> Habilidade
+	1,  // 7: DeckService.CreateDeck:input_type -> Request
+	0,  // 8: DeckService.GetDeck:input_type -> GetDeckResquest
+	3,  // 9: DeckService.AddCard:input_type -> AddCardRequest
+	4,  // 10: DeckService.EditDeck:input_type -> EditCardRequest
+	0,  // 11: DeckService.RemoveDeck:input_type -> GetDeckResquest
+	2,  // 12: DeckService.CreateDeck:output_type -> Response
+	2,  // 13: DeckService.GetDeck:output_type -> Response
+	2,  // 14: DeckService.AddCard:output_type -> Response
+	2,  // 15: DeckService.EditDeck:output_type -> Response
+	5,  // 16: DeckService.RemoveDeck:output_type -> ResponseMessage
+	12, // [12:17] is the sub-list for method output_type
+	7,  // [7:12] is the sub-list for method input_type
+	7,  // [7:7] is the sub-list for extension type_name
+	7,  // [7:7] is the sub-list for extension extendee
+	0,  // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_proto_deck_pocket_proto_init() }
@@ -914,18 +1044,13 @@ func file_proto_deck_pocket_proto_init() {
 	if File_proto_deck_pocket_proto != nil {
 		return
 	}
-	file_proto_deck_pocket_proto_msgTypes[3].OneofWrappers = []any{
-		(*Card_Pokemon)(nil),
-		(*Card_Item)(nil),
-		(*Card_Apoiador)(nil),
-	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_deck_pocket_proto_rawDesc), len(file_proto_deck_pocket_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   10,
+			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
