@@ -14,91 +14,91 @@ func NewRepository(db *sql.DB) Repository {
 	return Repository{db: db}
 }
 
-func (r *Repository) GetDeck(id int32) (model.Response, error) {
-	var response model.Response
-	query := `SELECT id, quantidade, tipo, estatistica FROM deck WHERE id=$1`
-	err := r.db.QueryRow(query, id).Scan(&response.Id, &response.Quantidade, &response.Tipo, &response.Estatistica.Id)
-	if err != nil {
-		fmt.Printf("Erro ao Buscar Deck : %v\n", err)
-		return model.Response{}, err
-	}
+// func (r *Repository) GetDeck(id int32) (model.Response, error) {
+// 	var response model.Response
+// 	query := `SELECT id, quantidade, tipo, estatistica FROM deck WHERE id=$1`
+// 	err := r.db.QueryRow(query, id).Scan(&response.Id, &response.Quantidade, &response.Tipo, &response.Estatistica.Id)
+// 	if err != nil {
+// 		fmt.Printf("Erro ao Buscar Deck : %v\n", err)
+// 		return model.Response{}, err
+// 	}
 
-	query = `SELECT vitoria, derrota, total, pontos_ganho, pontos_perdido, media_pontos FROM estatistica WHERE id=$1`
-	err = r.db.QueryRow(query, response.Estatistica.Id).Scan(&response.Estatistica.Vitoria, &response.Estatistica.Derrota, &response.Estatistica.Total, &response.Estatistica.Ponto_ganho, &response.Estatistica.Ponto_perdido, &response.Estatistica.Media_pontos)
-	if err != nil {
-		fmt.Printf("Erro ao Buscar Estatistica : %v\n", err)
-		return model.Response{}, err
-	}
+// 	query = `SELECT vitoria, derrota, total, pontos_ganho, pontos_perdido, media_pontos FROM estatistica WHERE id=$1`
+// 	err = r.db.QueryRow(query, response.Estatistica.Id).Scan(&response.Estatistica.Vitoria, &response.Estatistica.Derrota, &response.Estatistica.Total, &response.Estatistica.Ponto_ganho, &response.Estatistica.Ponto_perdido, &response.Estatistica.Media_pontos)
+// 	if err != nil {
+// 		fmt.Printf("Erro ao Buscar Estatistica : %v\n", err)
+// 		return model.Response{}, err
+// 	}
 
-	query = `SELECT card_deck FROM deck_card WHERE id_deck=$1`
-	card, err := r.db.Query(query, id)
-	if err != nil {
-		fmt.Printf("Erro ao Buscar card do Deck : %v\n", err)
-		return model.Response{}, err
-	}
-	var listCard []string
-	for card.Next() {
-		var cardUnit string
-		if err = card.Scan(&cardUnit); err != nil {
-			fmt.Printf("Erro ao Buscar card do Deck : %v\n", err)
-			return model.Response{}, err
-		}
-		listCard = append(listCard, cardUnit)
-	}
+// 	query = `SELECT card_deck FROM deck_card WHERE id_deck=$1`
+// 	card, err := r.db.Query(query, id)
+// 	if err != nil {
+// 		fmt.Printf("Erro ao Buscar card do Deck : %v\n", err)
+// 		return model.Response{}, err
+// 	}
+// 	var listCard []string
+// 	for card.Next() {
+// 		var cardUnit string
+// 		if err = card.Scan(&cardUnit); err != nil {
+// 			fmt.Printf("Erro ao Buscar card do Deck : %v\n", err)
+// 			return model.Response{}, err
+// 		}
+// 		listCard = append(listCard, cardUnit)
+// 	}
 
-	for _, crd := range listCard {
-		var valueInt int32
-		var cardUnit model.Card
-		query = `SELECT id, type_card FROM cards`
-		err := r.db.QueryRow(query, crd).Scan(&cardUnit.Id, &cardUnit.CardType)
-		if err != nil {
-			fmt.Printf("Erro ao Buscar card do Deck : %v\n", err)
-			return model.Response{}, err
-		}
+// 	for _, crd := range listCard {
+// 		var valueInt int32
+// 		var cardUnit model.Card
+// 		query = `SELECT id, type_card FROM cards`
+// 		err := r.db.QueryRow(query, crd).Scan(&cardUnit.Id, &cardUnit.CardType)
+// 		if err != nil {
+// 			fmt.Printf("Erro ao Buscar card do Deck : %v\n", err)
+// 			return model.Response{}, err
+// 		}
 
-		if cardUnit.CardType == "Pokemon" {
-			query = `SELECT card_pokemon FROM pokemon_card WHERE id_card=$1`
-			err := r.db.QueryRow(query, cardUnit.Id).Scan(&valueInt)
-			if err != nil {
-				fmt.Printf("Erro ao Buscar card do Deck : %v\n", err)
-				return model.Response{}, err
-			}
-			cardUnit.Pokemon, err = r.GetCardPokemon(valueInt)
-			if err != nil {
-				fmt.Printf("Erro ao Buscar card do Deck : %v\n", err)
-				return model.Response{}, err
-			}
-			response.Card = append(response.Card, cardUnit)
-		} else if cardUnit.CardType == "Apoiador" {
-			query = `SELECT card_apoiador FROM apoiador_card WHERE id_card=$1`
-			err := r.db.QueryRow(query, cardUnit.Id).Scan(&valueInt)
-			if err != nil {
-				fmt.Printf("Erro ao Buscar card do Deck : %v\n", err)
-				return model.Response{}, err
-			}
-			cardUnit.Apoiador, err = r.GetCardApoiador(valueInt)
-			if err != nil {
-				fmt.Printf("Erro ao Buscar card do Deck : %v\n", err)
-				return model.Response{}, err
-			}
-			response.Card = append(response.Card, cardUnit)
-		} else if cardUnit.CardType == "Item" {
-			query = `SELECT card_item FROM item_card WHERE id_card=$1`
-			err := r.db.QueryRow(query, cardUnit.Id).Scan(&valueInt)
-			if err != nil {
-				fmt.Printf("Erro ao Buscar card do Deck : %v\n", err)
-				return model.Response{}, err
-			}
-			cardUnit.Item, err = r.GetCardItem(valueInt)
-			if err != nil {
-				fmt.Printf("Erro ao Buscar card do Deck : %v\n", err)
-				return model.Response{}, err
-			}
-			response.Card = append(response.Card, cardUnit)
-		}
-	}
-	return response, err
-}
+// 		if cardUnit.CardType == "Pokemon" {
+// 			query = `SELECT card_pokemon FROM pokemon_card WHERE id_card=$1`
+// 			err := r.db.QueryRow(query, cardUnit.Id).Scan(&valueInt)
+// 			if err != nil {
+// 				fmt.Printf("Erro ao Buscar card do Deck : %v\n", err)
+// 				return model.Response{}, err
+// 			}
+// 			cardUnit.Pokemon, err = r.GetCardPokemon(valueInt)
+// 			if err != nil {
+// 				fmt.Printf("Erro ao Buscar card do Deck : %v\n", err)
+// 				return model.Response{}, err
+// 			}
+// 			response.Card = append(response.Card, cardUnit)
+// 		} else if cardUnit.CardType == "Apoiador" {
+// 			query = `SELECT card_apoiador FROM apoiador_card WHERE id_card=$1`
+// 			err := r.db.QueryRow(query, cardUnit.Id).Scan(&valueInt)
+// 			if err != nil {
+// 				fmt.Printf("Erro ao Buscar card do Deck : %v\n", err)
+// 				return model.Response{}, err
+// 			}
+// 			cardUnit.Apoiador, err = r.GetCardApoiador(valueInt)
+// 			if err != nil {
+// 				fmt.Printf("Erro ao Buscar card do Deck : %v\n", err)
+// 				return model.Response{}, err
+// 			}
+// 			response.Card = append(response.Card, cardUnit)
+// 		} else if cardUnit.CardType == "Item" {
+// 			query = `SELECT card_item FROM item_card WHERE id_card=$1`
+// 			err := r.db.QueryRow(query, cardUnit.Id).Scan(&valueInt)
+// 			if err != nil {
+// 				fmt.Printf("Erro ao Buscar card do Deck : %v\n", err)
+// 				return model.Response{}, err
+// 			}
+// 			cardUnit.Item, err = r.GetCardItem(valueInt)
+// 			if err != nil {
+// 				fmt.Printf("Erro ao Buscar card do Deck : %v\n", err)
+// 				return model.Response{}, err
+// 			}
+// 			response.Card = append(response.Card, cardUnit)
+// 		}
+// 	}
+// 	return response, err
+// }
 
 func (r *Repository) GetCardPokemon(id int32) (model.Pokemon, error) {
 	var pokemon model.Pokemon
@@ -216,45 +216,45 @@ func (r *Repository) CreateDeck(response model.Response) (int32, error) {
 	return id, err
 }
 
-func (r *Repository) AddCard(addCard model.AddCard) (model.Response, error) {
-	for _, card := range addCard.Cards {
-		var id int32
-		query := `INSERT INTO cards (type_card) VALUES ($1) RETURNING id`
-		err := r.db.QueryRow(query, card.CardType).Scan(&id)
-		if err != nil {
-			fmt.Printf("Erro ao adicionar um card no Deck: %v\n", err)
-			return model.Response{}, err
-		}
-		query = `INSERT INTO deck_card (id_deck, card_deck) VALUES ($1, $2)`
-		_, err = r.db.Exec(query, addCard.Id, id)
-		if err != nil {
-			fmt.Printf("Erro ao adicionar um card no Deck: %v\n", err)
-			return model.Response{}, err
-		}
+// func (r *Repository) AddCard(addCard model.AddCard) (model.Response, error) {
+// 	for _, card := range addCard.Cards {
+// 		var id int32
+// 		query := `INSERT INTO cards (type_card) VALUES ($1) RETURNING id`
+// 		err := r.db.QueryRow(query, card.CardType).Scan(&id)
+// 		if err != nil {
+// 			fmt.Printf("Erro ao adicionar um card no Deck: %v\n", err)
+// 			return model.Response{}, err
+// 		}
+// 		query = `INSERT INTO deck_card (id_deck, card_deck) VALUES ($1, $2)`
+// 		_, err = r.db.Exec(query, addCard.Id, id)
+// 		if err != nil {
+// 			fmt.Printf("Erro ao adicionar um card no Deck: %v\n", err)
+// 			return model.Response{}, err
+// 		}
 
-		if card.CardType == "Pokemon" {
-			query = `INSERT INTO cards_pokemon (id_card, card_pokemon) VALUES ($1, $2)`
-			_, err = r.db.Exec(query, id, card.Pokemon.Id)
-			if err != nil {
-				fmt.Printf("Erro ao adicionar uma card Pokemon no Deck: %v\n", err)
-				return model.Response{}, err
-			}
-		} else if card.CardType == "Apoiador" {
-			query = `INSERT INTO cards_apoiador (id_card, card_apoiador) VALUES ($1, $2)`
-			_, err = r.db.Exec(query, id, card.Apoiador.Id)
-			if err != nil {
-				fmt.Printf("Erro ao adicionar uma card Apoiador no Deck: %v\n", err)
-				return model.Response{}, err
-			}
-		} else if card.CardType == "Item" {
-			query = `INSERT INTO cards_item (id_card, card_item) VALUES ($1, $2)`
-			_, err = r.db.Exec(query, id, card.Item.Id)
-			if err != nil {
-				fmt.Printf("Erro ao adicionar uma card Item no Deck: %v\n", err)
-				return model.Response{}, err
-			}
-		}
-	}
-	response, err := r.GetDeck(addCard.Id)
-	return response, err
-}
+// 		if card.CardType == "Pokemon" {
+// 			query = `INSERT INTO cards_pokemon (id_card, card_pokemon) VALUES ($1, $2)`
+// 			_, err = r.db.Exec(query, id, card.Pokemon)
+// 			if err != nil {
+// 				fmt.Printf("Erro ao adicionar uma card Pokemon no Deck: %v\n", err)
+// 				return model.Response{}, err
+// 			}
+// 		} else if card.CardType == "Apoiador" {
+// 			query = `INSERT INTO cards_apoiador (id_card, card_apoiador) VALUES ($1, $2)`
+// 			_, err = r.db.Exec(query, id, card.Apoiador)
+// 			if err != nil {
+// 				fmt.Printf("Erro ao adicionar uma card Apoiador no Deck: %v\n", err)
+// 				return model.Response{}, err
+// 			}
+// 		} else if card.CardType == "Item" {
+// 			query = `INSERT INTO cards_item (id_card, card_item) VALUES ($1, $2)`
+// 			_, err = r.db.Exec(query, id, card.Item)
+// 			if err != nil {
+// 				fmt.Printf("Erro ao adicionar uma card Item no Deck: %v\n", err)
+// 				return model.Response{}, err
+// 			}
+// 		}
+// 	}
+// 	response, err := r.GetDeck(addCard.Id)
+// 	return response, err
+// }

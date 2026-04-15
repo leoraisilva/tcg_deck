@@ -14,29 +14,8 @@ func NewMapper() Mapper {
 func (m *Mapper) ToModel(request *pb.Request) model.Response {
 	var response model.Response
 	response.Quantidade = request.Quantidade
-	response.Tipo = response.Tipo
+	response.Tipo = model.Tipo(request.Tipo)
 	response.Estatistica = toEstatisticaModel(request.Estatistica)
-	for _, card := range request.Card {
-		var cardUnit model.Card
-		cardUnit.Id = card.ID
-
-		switch c := card.CardType.(type) {
-
-		case *pb.Card_Pokemon:
-			cardUnit.CardType = "Pokemon"
-			cardUnit.Pokemon = toPokemonModel(c.Pokemon)
-
-		case *pb.Card_Apoiador:
-			cardUnit.CardType = "Apoiador"
-			cardUnit.Apoiador = toApoiadorModel(c.Apoiador)
-
-		case *pb.Card_Item:
-			cardUnit.CardType = "Item"
-			cardUnit.Item = toItemModel(c.Item)
-		}
-
-		response.Card = append(response.Card, cardUnit)
-	}
 	return response
 }
 
@@ -50,6 +29,46 @@ func toEstatisticaModel(req *pb.Estatistica) model.Estatistica {
 	estatistica.Media_pontos = float32(req.PontoGanho / estatistica.Total)
 
 	return estatistica
+}
+
+func (m *Mapper) ToAddCardModel(req *pb.AddCardRequest) model.AddCard {
+	var addCard model.AddCard
+	addCard.Id = req.IdDeck
+	for _, card := range req.Card {
+		var cardUnit model.Card
+		cardUnit.Id = card.ID
+		cardUnit.CardType = card.CardType
+		switch cardUnit.CardType {
+		case "Pokemon":
+			cardUnit.Pokemon = card.IdPokemon
+		case "Apoiador":
+			cardUnit.Apoiador = card.IdApoiador
+		case "Item":
+			cardUnit.Item = card.IdItem
+		}
+		addCard.Cards = append(addCard.Cards, cardUnit)
+	}
+	return addCard
+}
+
+func (m *Mapper) ToAddCardRequest(addCard model.AddCard) *pb.AddCardRequest {
+	var addCardRequest pb.AddCardRequest
+	addCardRequest.IdDeck = addCard.Id
+	for _, card := range addCard.Cards {
+		var cardUnit pb.Card
+		cardUnit.ID = card.Id
+		cardUnit.CardType = card.CardType
+		switch cardUnit.CardType {
+		case "Pokemon":
+			cardUnit.IdPokemon = card.Pokemon
+		case "Apoiador":
+			cardUnit.IdApoiador = card.Apoiador
+		case "Item":
+			cardUnit.IdItem = card.Item
+		}
+		addCardRequest.Card = append(addCardRequest.Card, &cardUnit)
+	}
+	return &addCardRequest
 }
 
 func toPokemonModel(req *pb.Pokemon) model.Pokemon {
@@ -110,31 +129,6 @@ func (m *Mapper) ToPBResponse(response model.Response) *pb.Response {
 	pbResp.Quantidade = response.Quantidade
 	pbResp.Tipo = string(response.Tipo)
 	pbResp.Estatistica = toEstatisticaPB(response.Estatistica)
-
-	for _, card := range response.Card {
-		var pbCard pb.Card
-		pbCard.ID = card.Id
-
-		switch card.CardType {
-
-		case "Pokemon":
-			pbCard.CardType = &pb.Card_Pokemon{
-				Pokemon: toPokemonPB(card.Pokemon),
-			}
-
-		case "Apoiador":
-			pbCard.CardType = &pb.Card_Apoiador{
-				Apoiador: toApoiadorPB(card.Apoiador),
-			}
-
-		case "Item":
-			pbCard.CardType = &pb.Card_Item{
-				Item: toItemPB(card.Item),
-			}
-		}
-
-		pbResp.Card = append(pbResp.Card, &pbCard)
-	}
 
 	return &pbResp
 }

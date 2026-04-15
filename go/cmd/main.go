@@ -32,26 +32,28 @@ func (s *Server) CreateDeck(cont context.Context, request *pb.Request) (*pb.Resp
 	return result, nil
 }
 
-func (s *Server) GetDeck(cont context.Context, request *pb.GetDeckResquest) (*pb.Response, error) {
-	response, err := s.usecase.GetDeck(request.GetID())
-	if err != nil {
-		panic(err)
-	}
+// func (s *Server) GetDeck(cont context.Context, request *pb.GetDeckResquest) (*pb.Response, error) {
+// 	response, err := s.usecase.GetDeck(request.GetID())
+// 	if err != nil {
+// 		panic(err)
+// 	}
 
-	result := s.mapper.ToPBResponse(response)
-	return result, nil
-}
+// 	result := s.mapper.ToPBResponse(response)
+// 	return result, nil
+// }
 
-func (s *Server) AddCard(cont context.Context, request *pb.AddCardRequest) (*pb.Response, error) {
-	response, err := s.usecase.AddCard(request)
-	if err != nil {
-		panic(err)
-	}
-	return response, nil
-}
+// func (s *Server) AddCard(cont context.Context, request *pb.AddCardRequest) (*pb.Response, error) {
+// 	response, err := s.usecase.AddCard(s.mapper.ToAddCardModel(request))
+// 	if err != nil {
+// 		panic(err)
+// 	}
+// 	return s.mapper.ToPBResponse(response), nil
+// }
+
 func (s *Server) EditDeck(context.Context, *pb.EditCardRequest) (*pb.Response, error) {
 	return nil, status.Error(codes.Unimplemented, "method EditDeck not implemented")
 }
+
 func (s *Server) RemoveDeck(context.Context, *pb.GetDeckResquest) (*pb.ResponseMessage, error) {
 	return nil, status.Error(codes.Unimplemented, "method RemoveDeck not implemented")
 }
