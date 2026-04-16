@@ -17,10 +17,18 @@ func (u *Usecase) CreateDeck(response model.Response) (int32, error) {
 	return u.r.CreateDeck(response)
 }
 
-// func (u *Usecase) GetDeck(id int32) (model.Response, error) {
-// 	return u.r.GetDeck(id)
-// }
+func (u *Usecase) GetDeck(id int32) (model.Response, error) {
+	return u.r.GetDeck(id)
+}
 
-// func (u *Usecase) AddCard(addCard model.AddCard) (model.Response, error) {
-// 	return u.r.AddCard(addCard)
-// }
+func (u *Usecase) AddCard(addCard model.AddCard) (model.Response, error) {
+	return u.r.AddCard(addCard)
+}
+
+func (u *Usecase) EditDeck(editDeck model.EditCard) (model.Response, error) {
+	return u.r.EditDeck(editDeck)
+}
+
+func (u *Usecase) RemoveDeck(id int32) (model.ResponseMessage, error) {
+	return u.r.RemoveDeck(id)
+}

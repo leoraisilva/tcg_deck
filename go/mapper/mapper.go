@@ -19,18 +19,6 @@ func (m *Mapper) ToModel(request *pb.Request) model.Response {
 	return response
 }
 
-func toEstatisticaModel(req *pb.Estatistica) model.Estatistica {
-	var estatistica model.Estatistica
-	estatistica.Vitoria = req.Vitoria
-	estatistica.Derrota = req.Derrota
-	estatistica.Total = req.Vitoria + req.Derrota
-	estatistica.Ponto_ganho = req.PontoGanho
-	estatistica.Ponto_perdido = req.PontoPerdido
-	estatistica.Media_pontos = float32(req.PontoGanho / estatistica.Total)
-
-	return estatistica
-}
-
 func (m *Mapper) ToAddCardModel(req *pb.AddCardRequest) model.AddCard {
 	var addCard model.AddCard
 	addCard.Id = req.IdDeck
@@ -69,6 +57,70 @@ func (m *Mapper) ToAddCardRequest(addCard model.AddCard) *pb.AddCardRequest {
 		addCardRequest.Card = append(addCardRequest.Card, &cardUnit)
 	}
 	return &addCardRequest
+}
+
+func (m *Mapper) ToPBResponse(response model.Response) *pb.Response {
+	var pbResp pb.Response
+
+	pbResp.Quantidade = response.Quantidade
+	pbResp.Tipo = string(response.Tipo)
+	pbResp.Estatistica = toEstatisticaPB(response.Estatistica)
+
+	for _, card := range response.Card {
+		var cardUnit pb.CardResponse
+		cardUnit.ID = card.Id
+		cardUnit.CardType = card.CardType
+		switch cardUnit.CardType {
+		case "Pokemon":
+			cardUnit.Pokemon = toPokemonPB(card.Pokemon)
+		case "Apoiador":
+			cardUnit.Apoiador = toApoiadorPB(card.Apoiador)
+		case "Item":
+			cardUnit.Item = toItemPB(card.Item)
+		}
+		pbResp.Card = append(pbResp.Card, &cardUnit)
+	}
+	return &pbResp
+}
+
+func (m *Mapper) ToPBEditRequest(editDeck model.EditCard) *pb.EditCardRequest {
+	var editRequest pb.EditCardRequest
+	editRequest.IdDeck = editDeck.Id
+	for _, card := range editDeck.Cards {
+		var cardRequest pb.Card
+		cardRequest.ID = card.Id
+		cardRequest.CardType = card.CardType
+		switch cardRequest.CardType {
+		case "Pokemon":
+			cardRequest.IdPokemon = card.Pokemon
+		case "Apoiador":
+			cardRequest.IdApoiador = card.Apoiador
+		case "Item":
+			cardRequest.IdItem = card.Item
+		}
+		editRequest.Card = append(editRequest.Card, &cardRequest)
+	}
+	return &editRequest
+}
+
+func (m *Mapper) ToEditModel(req *pb.EditCardRequest) model.EditCard {
+	var editDeck model.EditCard
+	editDeck.Id = req.IdDeck
+	for _, card := range req.Card {
+		var cardModel model.Card
+		cardModel.Id = card.ID
+		cardModel.CardType = card.CardType
+		switch cardModel.CardType {
+		case "Pokemon":
+			cardModel.Pokemon = card.IdPokemon
+		case "Apoiador":
+			cardModel.Apoiador = card.IdApoiador
+		case "Item":
+			cardModel.Item = card.IdItem
+		}
+		editDeck.Cards = append(editDeck.Cards, cardModel)
+	}
+	return editDeck
 }
 
 func toPokemonModel(req *pb.Pokemon) model.Pokemon {
@@ -121,16 +173,6 @@ func toItemModel(req *pb.Item) model.Item {
 	item.Efeito = append(item.Efeito, req.Efeito)
 
 	return item
-}
-
-func (m *Mapper) ToPBResponse(response model.Response) *pb.Response {
-	var pbResp pb.Response
-
-	pbResp.Quantidade = response.Quantidade
-	pbResp.Tipo = string(response.Tipo)
-	pbResp.Estatistica = toEstatisticaPB(response.Estatistica)
-
-	return &pbResp
 }
 
 func toEstatisticaPB(model model.Estatistica) *pb.Estatistica {
@@ -192,4 +234,16 @@ func toItemPB(model model.Item) *pb.Item {
 		CardType: model.CardType,
 		Efeito:   efeito,
 	}
+}
+
+func toEstatisticaModel(req *pb.Estatistica) model.Estatistica {
+	var estatistica model.Estatistica
+	estatistica.Vitoria = req.Vitoria
+	estatistica.Derrota = req.Derrota
+	estatistica.Total = req.Vitoria + req.Derrota
+	estatistica.Ponto_ganho = req.PontoGanho
+	estatistica.Ponto_perdido = req.PontoPerdido
+	estatistica.Media_pontos = float32(req.PontoGanho / estatistica.Total)
+
+	return estatistica
 }
