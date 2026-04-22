@@ -23,7 +23,7 @@ const (
 
 type GetDeckResquest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	ID            int32                  `protobuf:"varint,1,opt,name=ID,proto3" json:"ID,omitempty"`
+	IdDeck        int32                  `protobuf:"varint,1,opt,name=id_deck,json=idDeck,proto3" json:"id_deck,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -58,9 +58,9 @@ func (*GetDeckResquest) Descriptor() ([]byte, []int) {
 	return file_proto_deck_pocket_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *GetDeckResquest) GetID() int32 {
+func (x *GetDeckResquest) GetIdDeck() int32 {
 	if x != nil {
-		return x.ID
+		return x.IdDeck
 	}
 	return 0
 }
@@ -627,10 +627,10 @@ func (x *Pokemon) GetHabilidade() []*Habilidade {
 
 type Ataque struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Nome          string                 `protobuf:"bytes,1,opt,name=nome,proto3" json:"nome,omitempty"`
-	Dano          int32                  `protobuf:"varint,2,opt,name=dano,proto3" json:"dano,omitempty"`
-	Custo         string                 `protobuf:"bytes,3,opt,name=custo,proto3" json:"custo,omitempty"`
-	Efeito        string                 `protobuf:"bytes,4,opt,name=efeito,proto3" json:"efeito,omitempty"`
+	NomeAtaque    string                 `protobuf:"bytes,1,opt,name=nome_ataque,json=nomeAtaque,proto3" json:"nome_ataque,omitempty"`
+	DanoAtaque    int32                  `protobuf:"varint,2,opt,name=dano_ataque,json=danoAtaque,proto3" json:"dano_ataque,omitempty"`
+	CustoAtaque   string                 `protobuf:"bytes,3,opt,name=custo_ataque,json=custoAtaque,proto3" json:"custo_ataque,omitempty"`
+	EfeitoAtaque  string                 `protobuf:"bytes,4,opt,name=efeito_ataque,json=efeitoAtaque,proto3" json:"efeito_ataque,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -665,40 +665,40 @@ func (*Ataque) Descriptor() ([]byte, []int) {
 	return file_proto_deck_pocket_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *Ataque) GetNome() string {
+func (x *Ataque) GetNomeAtaque() string {
 	if x != nil {
-		return x.Nome
+		return x.NomeAtaque
 	}
 	return ""
 }
 
-func (x *Ataque) GetDano() int32 {
+func (x *Ataque) GetDanoAtaque() int32 {
 	if x != nil {
-		return x.Dano
+		return x.DanoAtaque
 	}
 	return 0
 }
 
-func (x *Ataque) GetCusto() string {
+func (x *Ataque) GetCustoAtaque() string {
 	if x != nil {
-		return x.Custo
+		return x.CustoAtaque
 	}
 	return ""
 }
 
-func (x *Ataque) GetEfeito() string {
+func (x *Ataque) GetEfeitoAtaque() string {
 	if x != nil {
-		return x.Efeito
+		return x.EfeitoAtaque
 	}
 	return ""
 }
 
 type Habilidade struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Nome          string                 `protobuf:"bytes,1,opt,name=nome,proto3" json:"nome,omitempty"`
-	Efeito        string                 `protobuf:"bytes,2,opt,name=efeito,proto3" json:"efeito,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	NomeHabilidade   string                 `protobuf:"bytes,1,opt,name=nome_habilidade,json=nomeHabilidade,proto3" json:"nome_habilidade,omitempty"`
+	EfeitoHabilidade string                 `protobuf:"bytes,2,opt,name=efeito_habilidade,json=efeitoHabilidade,proto3" json:"efeito_habilidade,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *Habilidade) Reset() {
@@ -731,16 +731,16 @@ func (*Habilidade) Descriptor() ([]byte, []int) {
 	return file_proto_deck_pocket_proto_rawDescGZIP(), []int{10}
 }
 
-func (x *Habilidade) GetNome() string {
+func (x *Habilidade) GetNomeHabilidade() string {
 	if x != nil {
-		return x.Nome
+		return x.NomeHabilidade
 	}
 	return ""
 }
 
-func (x *Habilidade) GetEfeito() string {
+func (x *Habilidade) GetEfeitoHabilidade() string {
 	if x != nil {
-		return x.Efeito
+		return x.EfeitoHabilidade
 	}
 	return ""
 }
@@ -977,9 +977,9 @@ var File_proto_deck_pocket_proto protoreflect.FileDescriptor
 
 const file_proto_deck_pocket_proto_rawDesc = "" +
 	"\n" +
-	"\x17proto/deck_pocket.proto\"!\n" +
-	"\x0fGetDeckResquest\x12\x0e\n" +
-	"\x02ID\x18\x01 \x01(\x05R\x02ID\"m\n" +
+	"\x17proto/deck_pocket.proto\"*\n" +
+	"\x0fGetDeckResquest\x12\x17\n" +
+	"\aid_deck\x18\x01 \x01(\x05R\x06idDeck\"m\n" +
 	"\aRequest\x12\x1e\n" +
 	"\n" +
 	"quantidade\x18\x01 \x01(\x05R\n" +
@@ -1030,16 +1030,18 @@ const file_proto_deck_pocket_proto_rawDesc = "" +
 	" \x03(\v2\a.AtaqueR\x06ataque\x12+\n" +
 	"\n" +
 	"habilidade\x18\v \x03(\v2\v.HabilidadeR\n" +
-	"habilidade\"^\n" +
-	"\x06Ataque\x12\x12\n" +
-	"\x04nome\x18\x01 \x01(\tR\x04nome\x12\x12\n" +
-	"\x04dano\x18\x02 \x01(\x05R\x04dano\x12\x14\n" +
-	"\x05custo\x18\x03 \x01(\tR\x05custo\x12\x16\n" +
-	"\x06efeito\x18\x04 \x01(\tR\x06efeito\"8\n" +
+	"habilidade\"\x92\x01\n" +
+	"\x06Ataque\x12\x1f\n" +
+	"\vnome_ataque\x18\x01 \x01(\tR\n" +
+	"nomeAtaque\x12\x1f\n" +
+	"\vdano_ataque\x18\x02 \x01(\x05R\n" +
+	"danoAtaque\x12!\n" +
+	"\fcusto_ataque\x18\x03 \x01(\tR\vcustoAtaque\x12#\n" +
+	"\refeito_ataque\x18\x04 \x01(\tR\fefeitoAtaque\"b\n" +
 	"\n" +
-	"Habilidade\x12\x12\n" +
-	"\x04nome\x18\x01 \x01(\tR\x04nome\x12\x16\n" +
-	"\x06efeito\x18\x02 \x01(\tR\x06efeito\"c\n" +
+	"Habilidade\x12'\n" +
+	"\x0fnome_habilidade\x18\x01 \x01(\tR\x0enomeHabilidade\x12+\n" +
+	"\x11efeito_habilidade\x18\x02 \x01(\tR\x10efeitoHabilidade\"c\n" +
 	"\bApoiador\x12\x0e\n" +
 	"\x02ID\x18\x01 \x01(\x05R\x02ID\x12\x12\n" +
 	"\x04nome\x18\x02 \x01(\tR\x04nome\x12\x1b\n" +

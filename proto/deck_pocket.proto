@@ -11,7 +11,7 @@ service DeckService {
 }
 
 message GetDeckResquest {
-    int32 ID = 1;
+    int32 id_deck = 1;
 }
 
 message Request {
@@ -74,15 +74,15 @@ message Pokemon {
 }
 
 message Ataque {
-    string nome = 1;
-    int32 dano = 2;
-    string custo = 3;
-    string efeito = 4;
+    string nome_ataque = 1;
+    int32 dano_ataque = 2;
+    string custo_ataque = 3;
+    string efeito_ataque = 4;
 }
 
 message Habilidade {
-    string nome = 1;
-    string efeito = 2;
+    string nome_habilidade = 1;
+    string efeito_habilidade = 2;
 }
 
 message Apoiador {

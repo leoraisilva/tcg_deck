@@ -31,7 +31,7 @@ func (s *Server) CreateDeck(cont context.Context, request *pb.Request) (*pb.Resp
 }
 
 func (s *Server) GetDeck(cont context.Context, request *pb.GetDeckResquest) (*pb.Response, error) {
-	response, err := s.usecase.GetDeck(request.GetID())
+	response, err := s.usecase.GetDeck(request.IdDeck)
 	if err != nil {
 		panic(err)
 	}
@@ -57,13 +57,13 @@ func (s *Server) EditDeck(cont context.Context, req *pb.EditCardRequest) (*pb.Re
 }
 
 func (s *Server) RemoveDeck(cont context.Context, req *pb.GetDeckResquest) (*pb.ResponseMessage, error) {
-	response, err := s.usecase.RemoveDeck(req.ID)
+	response, err := s.usecase.RemoveDeck(req.GetIdDeck())
 	if err != nil {
 		panic(err)
 	}
-	var result *pb.ResponseMessage
+	var result pb.ResponseMessage
 	result.Response = response.Message
-	return result, nil
+	return &result, nil
 }
 
 func main() {

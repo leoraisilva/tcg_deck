@@ -139,18 +139,18 @@ func toPokemonModel(req *pb.Pokemon) model.Pokemon {
 
 func toAtaqueModel(req *pb.Ataque) model.Ataque {
 	var ataque model.Ataque
-	ataque.Nome = req.Nome
-	ataque.Dano = req.Dano
-	ataque.Custo = req.Custo
-	ataque.Efeito = req.Efeito
+	ataque.Nome = req.NomeAtaque
+	ataque.Dano = req.DanoAtaque
+	ataque.Custo = req.CustoAtaque
+	ataque.Efeito = req.EfeitoAtaque
 
 	return ataque
 }
 
 func toHabilidadeModel(req *pb.Habilidade) model.Habilidade {
 	var habilidade model.Habilidade
-	habilidade.Nome = req.Nome
-	habilidade.Efeito = req.Efeito
+	habilidade.Nome = req.NomeHabilidade
+	habilidade.Efeito = req.EfeitoHabilidade
 
 	return habilidade
 }
@@ -186,31 +186,43 @@ func toEstatisticaPB(model model.Estatistica) *pb.Estatistica {
 
 func toPokemonPB(model model.Pokemon) *pb.Pokemon {
 	return &pb.Pokemon{
-		ID:       model.Id,
-		Nome:     model.Nome,
-		Tipo:     string(model.Tipo),
-		Estagio:  model.Estagio,
-		Geracao:  model.Geracao,
-		Recuo:    model.Recuo,
-		Ps:       model.PS,
-		Fraqueza: string(model.Fraqueza),
+		ID:         model.Id,
+		Nome:       model.Nome,
+		CardType:   model.TipoCarta,
+		Tipo:       string(model.Tipo),
+		Estagio:    model.Estagio,
+		Ataque:     toAtaquePB(model.Ataque),
+		Habilidade: toHabilidadePB(model.Habilidade),
+		Geracao:    model.Geracao,
+		Recuo:      model.Recuo,
+		Ps:         model.PS,
+		Fraqueza:   string(model.Fraqueza),
 	}
 }
 
-func toAtaquePB(model model.Ataque) *pb.Ataque {
-	return &pb.Ataque{
-		Nome:   model.Nome,
-		Dano:   model.Dano,
-		Custo:  model.Custo,
-		Efeito: model.Efeito,
+func toAtaquePB(model []model.Ataque) []*pb.Ataque {
+	var ataqueList []*pb.Ataque
+	for _, atk := range model {
+		var ataque pb.Ataque
+		ataque.NomeAtaque = atk.Nome
+		ataque.DanoAtaque = atk.Dano
+		ataque.CustoAtaque = atk.Custo
+		ataque.EfeitoAtaque = atk.Efeito
+		ataqueList = append(ataqueList, &ataque)
+		return ataqueList
 	}
+	return ataqueList
 }
 
-func toHabilidadePB(model model.Habilidade) *pb.Habilidade {
-	return &pb.Habilidade{
-		Nome:   model.Nome,
-		Efeito: model.Efeito,
+func toHabilidadePB(model []model.Habilidade) []*pb.Habilidade {
+	var habilidadeList []*pb.Habilidade
+	for _, hab := range model {
+		var habilidade pb.Habilidade
+		habilidade.NomeHabilidade = hab.Nome
+		habilidade.EfeitoHabilidade = hab.Efeito
+		habilidadeList = append(habilidadeList, &habilidade)
 	}
+	return habilidadeList
 }
 
 func toApoiadorPB(model model.Apoiador) *pb.Apoiador {
@@ -240,10 +252,10 @@ func toEstatisticaModel(req *pb.Estatistica) model.Estatistica {
 	var estatistica model.Estatistica
 	estatistica.Vitoria = req.Vitoria
 	estatistica.Derrota = req.Derrota
-	estatistica.Total = req.Vitoria + req.Derrota
+	estatistica.Total = req.Total
 	estatistica.Ponto_ganho = req.PontoGanho
 	estatistica.Ponto_perdido = req.PontoPerdido
-	estatistica.Media_pontos = float32(req.PontoGanho / estatistica.Total)
+	estatistica.Media_pontos = req.MediaPontos
 
 	return estatistica
 }

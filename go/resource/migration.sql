@@ -5,6 +5,11 @@ CREATE TABLE IF NOT EXISTS deck (
     estatistica INT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS cards (
+    id SERIAL PRIMARY KEY,
+    type_card VARCHAR(50) NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS deck_card (
     id_deck INT NOT NULL,
     card_deck INT NOT NULL,
@@ -13,10 +18,6 @@ CREATE TABLE IF NOT EXISTS deck_card (
     FOREIGN KEY (card_deck) REFERENCES cards (id)
 );
 
-CREATE TABLE IF NOT EXISTS cards (
-    id SERIAL PRIMARY KEY,
-    type_card VARCHAR(50) NOT NULL
-);
 
 CREATE TABLE IF NOT EXISTS cards_pokemon (
     id_card INT NOT NULL,

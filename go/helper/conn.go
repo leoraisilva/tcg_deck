@@ -3,6 +3,7 @@ package helper
 import (
 	"database/sql"
 	"fmt"
+	"os"
 
 	_ "github.com/lib/pq"
 )
@@ -28,7 +29,27 @@ func GetConnection() (*sql.DB, error) {
 		fmt.Printf("Erro ao Ping no Banco: %v\n", err)
 		return nil, err
 	}
+	err = ConnMigration(db)
+	if err != nil {
+		return nil, err
+	}
 
 	fmt.Printf("Conexão estabelecida com Sucesso")
 	return db, nil
+}
+
+func ConnMigration(db *sql.DB) error {
+	sqlByte, err := os.ReadFile("../resource/migration.sql")
+	if err != nil {
+		fmt.Printf("Erro ao adicionar migration: %v\n", err)
+		return err
+	}
+
+	_, err = db.Exec(string(sqlByte))
+	if err != nil {
+		fmt.Printf("Erro ao criar migration: %v\n", err)
+		return err
+	}
+	fmt.Printf("Migration adicionado com Sucesso!!\n")
+	return nil
 }
